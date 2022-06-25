@@ -54,4 +54,15 @@ public class Veiculo {
     public void setCaracteristicas(String caracteristicas) {
         this.caracteristicas = caracteristicas;
     }
+
+    @Override
+    public String toString() {
+        return "Veiculo{" +
+                "matricula=" + matricula +
+                ", modelo='" + modelo + '\'' +
+                ", marca='" + marca + '\'' +
+                ", donoAnterior=" + donoAnterior +
+                ", caracteristicas='" + caracteristicas + '\'' +
+                '}';
+    }
 }

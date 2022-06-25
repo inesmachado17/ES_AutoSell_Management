@@ -1,9 +1,13 @@
+import Model.Gestor;
+import Model.Veiculo;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.LinkedList;
 
 public class AutoSellMainWindow extends JFrame{
 
@@ -70,6 +74,7 @@ public class AutoSellMainWindow extends JFrame{
     private JButton oficinasPesquisaButton;
     private JButton pecasPesquisaButton;
     private JTextField txtPecasPesquisa;
+    private JButton btnAtualizarTabVeiculos;
     private JButton transportesConfirmar;
     private static JFrame autoSellMainFrame;
 
@@ -81,24 +86,12 @@ public class AutoSellMainWindow extends JFrame{
         grupoVeiculos.add(rdVeiculoMatricula);
         grupoVeiculos.add(rdVeiculoMarca);
 
-        String[] colunasVeiculos = {"Matricula","Marca", "Modelo", "Ano", "Dono Ant.", "N.Donos", "Caracteristicas"};
-        Object[][] dataVeiculos = {{"04-ER-22", "Audi", "A3", "2000","212543987","1", "3P Preto"},
-                           {"50-35-LI", "BMW", "320", "1999","234765437","2", "5P Branco"},
-                           {"65-RD-15", "Opel", "Corsa", "1998","210454772","1", "Comercial Azul Escuro"},
-                           {"52-23-FT","Renault", "Megane", "2007","218656098","3", "2P Cinza"},
-                           {"01-XS-87","Tesla", "Y", "2019","119223223","2", "5P Preto - Electrico"}};
-
-        DefaultTableModel modelVeiculos = new DefaultTableModel(colunasVeiculos, 0);
-
-        for (Object[] item : dataVeiculos) {
-            modelVeiculos.addRow(item);
-        }
-        tabelaVeiculos.setModel(modelVeiculos);
+        Gestor.getGestor().atualizaTabelaVeiculos(tabelaVeiculos);
 
         veiculoInserirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AutoSellVeiculosInserir inserir = new AutoSellVeiculosInserir();
+                new AutoSellVeiculosInserir(AutoSellMainWindow.this, tabelaVeiculos);
             }
         });
 
@@ -110,7 +103,7 @@ public class AutoSellMainWindow extends JFrame{
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
-                AutoSellVeiculosEditar editar = new AutoSellVeiculosEditar(tabelaVeiculos);
+                new AutoSellVeiculosEditar(AutoSellMainWindow.this, tabelaVeiculos);
 
             }
         });
@@ -127,8 +120,8 @@ public class AutoSellMainWindow extends JFrame{
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
                 if(result == JOptionPane.YES_OPTION){
-                    DefaultTableModel model = (DefaultTableModel) tabelaVeiculos.getModel();
-                    model.removeRow(tabelaVeiculos.getSelectedRow());
+                    Gestor.getGestor().removerVeiculo(tabelaVeiculos.getValueAt(tabelaVeiculos.getSelectedRow(), 0).toString());
+                    Gestor.getGestor().atualizaTabelaVeiculos(tabelaVeiculos);
                 }
             }
         });
@@ -646,8 +639,6 @@ public class AutoSellMainWindow extends JFrame{
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
-
-
     }
 
 }

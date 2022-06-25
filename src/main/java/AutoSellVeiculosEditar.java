@@ -1,8 +1,14 @@
+import Model.Gestor;
+import Model.Matricula;
+import Model.Veiculo;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AutoSellVeiculosEditar extends JFrame {
+public class AutoSellVeiculosEditar extends JDialog {
+
+    private JFrame parent;
 
     private JPanel PainelVeiculosEditar;
     private JTextField txtMatricula;
@@ -13,9 +19,11 @@ public class AutoSellVeiculosEditar extends JFrame {
     private JButton guardarButton;
     private JButton cancelarButton;
 
-    public AutoSellVeiculosEditar(JTable table) {
+    public AutoSellVeiculosEditar(JFrame frame, JTable table) {
+        this.parent = frame;
 
         String[] marcas = {"Audi","Toyota","Mercedes-Benz","BMW","Honda","Ford","Hyundai","Nissan","Volkswagen","Porsche","Opel"};
+
         final DefaultComboBoxModel model = new DefaultComboBoxModel(marcas);
         cbMarca.setModel(model);
 
@@ -42,7 +50,51 @@ public class AutoSellVeiculosEditar extends JFrame {
         guardarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                Matricula matricula = new Matricula(txtMatricula.getText());
+
+                if(!matricula.isMatriculaValida()){
+                    JOptionPane.showMessageDialog(null, "Matricula Invalida.");
+                    return;
+                }
+
+                if(txtModelo.getText().equals("")){
+                    JOptionPane.showMessageDialog(null, "Modelo Invalido.");
+                    return;
+                }
+
+                if(cbMarca.getSelectedItem().toString().equals("")){
+                    JOptionPane.showMessageDialog(null, "Marca Invalida.");
+                    return;
+                }
+
+                if(!Gestor.getGestor().isDonoAnteriorValido(txtDonoAnt.getText())){
+                    JOptionPane.showMessageDialog(null, "Dono Anterior Invalido.");
+                    return;
+                }
+
+                if(taCaracteristicas.getText().equals("")){
+                    JOptionPane.showMessageDialog(null, "Caracteristicas Invalidas.");
+                    return;
+                }
+
+                Veiculo veiculo = new Veiculo(matricula,txtModelo.getText(), cbMarca.getSelectedItem().toString(), Integer.parseInt(txtDonoAnt.getText()), taCaracteristicas.getText());
+
+                Veiculo v = Gestor.getGestor().getVeiculo(matricula);
+
+                if(v == null){
+                    JOptionPane.showMessageDialog(null, "Veiculo não existe na base de dados.");
+                    return;
+                }
+
+                Gestor.getGestor().atualizarVeiculo(veiculo);
+
+                System.out.println(veiculo.toString());
+
+                Gestor.getGestor().atualizaTabelaVeiculos(table);
+
                 dispose();
+
             }
         });
     }

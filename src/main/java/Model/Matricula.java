@@ -22,4 +22,11 @@ public class Matricula {
     public String getMatricula(){
         return matricula;
     }
+
+    @Override
+    public String toString() {
+        return "Matricula{" +
+                "matricula='" + matricula + '\'' +
+                '}';
+    }
 }
