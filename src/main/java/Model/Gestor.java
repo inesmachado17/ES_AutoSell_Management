@@ -52,7 +52,7 @@ public class Gestor {
         clientes.add(new Cliente(210329983, "Rosa Maria", 916983323, "rosa.maria@sapo.pt", "Travessa de sto Antonio","3154-431"));
 
         LinkedList<Transacao> transacao = new LinkedList<>();
-        transacao.add(new Transacao("Compra", 230123321, 210329983, new Matricula("04-ER-22"), 500.00));
+        transacao.add(new Transacao("Compra", 230123321, 210329983, new Matricula("04-ER-22"), 500.00, null));
         historicoClientes.put("230123321", transacao);
     }
 

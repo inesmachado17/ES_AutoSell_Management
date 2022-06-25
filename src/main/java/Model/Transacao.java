@@ -6,13 +6,17 @@ public class Transacao {
     private int nifVendedor;
     private Matricula matricula;
     private double valor;
+    private Data dataTransacao;
+    private Boolean confirmada;
 
-    public Transacao(String tipo, int nifComprador, int nifVendedor, Matricula matricula, double valor) {
+    public Transacao(String tipo, int nifComprador, int nifVendedor, Matricula matricula, double valor, Data dataTransacao) {
         this.tipo = tipo;
         this.nifComprador = nifComprador;
         this.nifVendedor = nifVendedor;
         this.matricula = matricula;
         this.valor = valor;
+        this.dataTransacao = dataTransacao;
+        this.confirmada = false;
     }
 
     public String getTipo() {
@@ -53,5 +57,21 @@ public class Transacao {
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+
+    public Data getDataTransacao() {
+        return dataTransacao;
+    }
+
+    public void setDataTransacao(Data dataTransacao) {
+        this.dataTransacao = dataTransacao;
+    }
+
+    public Boolean getConfirmada() {
+        return confirmada;
+    }
+
+    public void setConfirmada(Boolean confirmada) {
+        this.confirmada = confirmada;
     }
 }
