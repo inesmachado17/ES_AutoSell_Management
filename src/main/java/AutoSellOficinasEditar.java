@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 
 public class AutoSellOficinasEditar extends JDialog{
 
+    private JFrame parent;
+
     private JButton guardarButton;
     private JButton cancelarButton;
     private JTextField txtMatricula;
@@ -20,6 +22,8 @@ public class AutoSellOficinasEditar extends JDialog{
 
     public AutoSellOficinasEditar(JFrame frame, JTable table) {
 
+        this.parent = frame;
+
        //String[] oficinas = {"Lisboa","Coimbra","Leiria","Porto"};
         String[] oficinas = Gestor.getGestor().getOficinas();
 
@@ -27,7 +31,7 @@ public class AutoSellOficinasEditar extends JDialog{
         cbOficina.setModel(modeloficinas);
 
         //String[] servicos = {"Manutenção", "Preparação"};
-        String[] servicos = Gestor.getGestor().getOficinas();
+        String[] servicos = Gestor.getGestor().getTiposServico();
 
         final DefaultComboBoxModel modeloservicos = new DefaultComboBoxModel(servicos);
         cbServico.setModel(modeloservicos);

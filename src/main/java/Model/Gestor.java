@@ -2,15 +2,17 @@ package Model;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Gestor {
 
     private String[] oficinas = {"Lisboa","Coimbra","Leiria","Porto"};
     private String[] tiposServico = {"Manutenção","Preparação"};
-    private String[] marcas = {"Audi","Toyota","Mercedes-Benz","BMW","Honda","Ford","Hyundai","Nissan","Volkswagen","Porsche", "Opel"};
-
+    private String[] marcasAuto = {"Audi","Toyota","Mercedes-Benz","BMW","Honda","Ford","Hyundai","Nissan","Volkswagen","Porsche", "Opel"};
+    private String[] marcasPecas = {"Bosh", "Castrol", "Febi","ABS","Ridex","Mapco","Vaico","Brembo","SKF","Ate","Stark","Mann Filter", "Van Wezel", "Monroe","NKG","Sachs","TRW","Valeu","Topran","Das Original","SWAG","Metzger"};
     private LinkedList<Trabalho> trabalhos;
     private LinkedList<Peca> pecas;
     private HashMap<String, LinkedList<Pedido>> pedidos = new HashMap<>();
@@ -28,14 +30,14 @@ public class Gestor {
         this.veiculos = new LinkedList<>();
 
         veiculos.add(new Veiculo(new Matricula("04-ER-22"), "A3", "Audi", 343222334, "5P"));
-        veiculos.add(new Veiculo(new Matricula("40-ET-00"), "X3", "BMW", 567229456, "2P"));
-        veiculos.add(new Veiculo(new Matricula("KK-04-33"), "Clio", "Renault", 134223452, "4P"));
+        veiculos.add(new Veiculo(new Matricula("50-20-RP"), "X3", "BMW", 567229456, "2P"));
+        veiculos.add(new Veiculo(new Matricula("05-01-LI"), "Clio", "Renault", 134223452, "4P"));
 
         trabalhos.add(new Trabalho("Preparação", new Matricula("04-ER-22"), "Leiria", new Data(25,06,2022), null));
 
         pecas.add(new Peca("BS01", "Bosh", "Lisboa", 1, "Oleo para motor"));
         pecas.add(new Peca("C901", "Castrol", "Coimbra", 2, "Correia Distribuição"));
-        pecas.add(new Peca("JANTE54", "WURTH", "Leiria", 8, "Jantes"));
+        pecas.add(new Peca("JANTE54", "Febi", "Leiria", 8, "Jantes"));
     }
 
     public String[] getOficinas() {
@@ -46,8 +48,12 @@ public class Gestor {
         return tiposServico;
     }
 
-    public String[] getMarcas() {
-        return marcas;
+    public String[] getMarcasAuto() {
+        return marcasAuto;
+    }
+
+    public String[] getMarcasPecas(){
+        return marcasPecas;
     }
 
     public LinkedList<Trabalho> getTrabalhos() {
@@ -85,8 +91,7 @@ public class Gestor {
 
         for (Veiculo v: veiculos) {
             if(v.getMatricula().getMatricula().equals(veiculo.getMatricula().getMatricula())){
-               veiculos.remove(v);
-               veiculos.add(veiculo);
+                veiculos.set(veiculos.indexOf(v), veiculo);
             }
         }
     }
@@ -138,10 +143,13 @@ public class Gestor {
     }
 
     public void atualizarTrabalho(Trabalho trabalho){
+
+        if(trabalho == null)
+            return;
+
         for (Trabalho t: trabalhos) {
             if(t.getMatricula().getMatricula().equals(trabalho.getMatricula().getMatricula())){
-                trabalhos.remove(t);
-                trabalhos.add(trabalho);
+                trabalhos.set(trabalhos.indexOf(t), trabalho);
             }
         }
     }
@@ -186,10 +194,13 @@ public class Gestor {
     }
 
     public void atualizarPeca(Peca peca){
+
+        if(peca == null)
+            return;
+
         for (Peca p: pecas) {
-            if(p.getReferencia().equals(p.getReferencia())){
-                pecas.remove(p);
-                pecas.add(peca);
+            if(p.getReferencia().equals(peca.getReferencia())){
+                pecas.set(pecas.indexOf(p), peca);
             }
         }
     }

@@ -30,7 +30,7 @@ public class AutoSellPecasInserir extends JDialog {
         cbLocal.setModel(modelLocais);
 
         //String[] marcasPecas = {"Bosh","Castrol","Wurth"};
-        String[] marcasPecas = Gestor.getGestor().getMarcas();
+        String[] marcasPecas = Gestor.getGestor().getMarcasPecas();
 
         final DefaultComboBoxModel modelPecas = new DefaultComboBoxModel(marcasPecas);
         cbMarca.setModel(modelPecas);

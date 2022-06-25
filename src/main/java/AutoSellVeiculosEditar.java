@@ -23,7 +23,7 @@ public class AutoSellVeiculosEditar extends JDialog {
         this.parent = frame;
 
         //String[] marcas = {"Audi","Toyota","Mercedes-Benz","BMW","Honda","Ford","Hyundai","Nissan","Volkswagen","Porsche","Opel"};
-        String[] marcas = Gestor.getGestor().getMarcas();
+        String[] marcas = Gestor.getGestor().getMarcasAuto();
 
         final DefaultComboBoxModel model = new DefaultComboBoxModel(marcas);
         cbMarca.setModel(model);
