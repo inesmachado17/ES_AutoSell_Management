@@ -6,6 +6,8 @@ import javax.swing.table.TableModel;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Gestor {
 
@@ -13,10 +15,13 @@ public class Gestor {
     private String[] tiposServico = {"Manutenção","Preparação"};
     private String[] marcasAuto = {"Audi","Toyota","Mercedes-Benz","BMW","Honda","Ford","Hyundai","Nissan","Volkswagen","Porsche", "Opel"};
     private String[] marcasPecas = {"Bosh", "Castrol", "Febi","ABS","Ridex","Mapco","Vaico","Brembo","SKF","Ate","Stark","Mann Filter", "Van Wezel", "Monroe","NKG","Sachs","TRW","Valeu","Topran","Das Original","SWAG","Metzger"};
+
     private LinkedList<Trabalho> trabalhos;
     private LinkedList<Peca> pecas;
-    private HashMap<String, LinkedList<Pedido>> pedidos = new HashMap<>();
+    private HashMap<String, LinkedList<Pedido>> pedidos;
     private LinkedList<Veiculo> veiculos;
+    private LinkedList<Cliente> clientes;
+    private HashMap<String, LinkedList<Transacao>> historicoClientes;
 
     private static final Gestor instancia = new Gestor();
 
@@ -28,6 +33,10 @@ public class Gestor {
         this.trabalhos = new LinkedList<>();
         this.pecas = new LinkedList<>();
         this.veiculos = new LinkedList<>();
+        this.clientes = new LinkedList<>();
+
+        this.pedidos = new HashMap<>();
+        this.historicoClientes = new HashMap<>();
 
         veiculos.add(new Veiculo(new Matricula("04-ER-22"), "A3", "Audi", 343222334, "5P"));
         veiculos.add(new Veiculo(new Matricula("50-20-RP"), "X3", "BMW", 567229456, "2P"));
@@ -38,6 +47,13 @@ public class Gestor {
         pecas.add(new Peca("BS01", "Bosh", "Lisboa", 1, "Oleo para motor"));
         pecas.add(new Peca("C901", "Castrol", "Coimbra", 2, "Correia Distribuição"));
         pecas.add(new Peca("JANTE54", "Febi", "Leiria", 8, "Jantes"));
+
+        clientes.add(new Cliente(230123321, "Pedro Martins", 963325432, "p.martins@gmail.com", "Rua de escola S/N", "2400-000"));
+        clientes.add(new Cliente(210329983, "Rosa Maria", 916983323, "rosa.maria@sapo.pt", "Travessa de sto Antonio","3154-431"));
+
+        LinkedList<Transacao> transacao = new LinkedList<>();
+        transacao.add(new Transacao("Compra", 230123321, 210329983, new Matricula("04-ER-22"), 500.00));
+        historicoClientes.put("230123321", transacao);
     }
 
     public String[] getOficinas() {
@@ -248,7 +264,88 @@ public class Gestor {
         result.add(p);
     }
 
-    public boolean isDonoAnteriorValido(String dono){
+    public LinkedList<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public Cliente getCliente(int nif){
+        Cliente result = null;
+        for (Cliente c: clientes) {
+            if(c.getNif() == nif)
+                result = c;
+        }
+        return result;
+    }
+
+    public void inserirCliente(Cliente cliente){
+        if(cliente == null)
+            return;
+
+        this.clientes.add(cliente);
+    }
+
+    public void atualizarCliente(Cliente cliente){
+
+        if(cliente == null)
+            return;
+
+        for (Cliente c: clientes) {
+            if(c.getNif() == cliente.getNif()){
+                clientes.set(clientes.indexOf(c), cliente);
+            }
+        }
+    }
+
+    public void removerCliente(String nif){
+        for (Cliente c: clientes) {
+            if(c.getNif() == Integer.parseInt(nif)){
+                clientes.remove(c);
+            }
+        }
+    }
+
+    public LinkedList<Transacao> getTransacoes(String nif){
+        LinkedList<Transacao> transacoes = historicoClientes.get(nif);
+        if(transacoes == null)
+            return null;
+        return transacoes;
+    }
+
+    //UPDATE TABELA CLIENTES
+    public void atualizaTabelaClientes(JTable tabela){
+
+        String[] colunasClientes = {"NIF","Nome", "Telefone", "Email", "Morada", "Cod.Postal"};
+
+        LinkedList<Cliente> clientes = Gestor.getGestor().getClientes();
+        DefaultTableModel modelClientes = new DefaultTableModel(colunasClientes, 0);
+
+        for (Cliente c : clientes) {
+            modelClientes.addRow(new Object[]{ c.getNif(), c.getNome(), c.getTelefone(), c.getEmail(), c.getMorada(), c.getCodPostal() });
+        }
+        tabela.setModel(modelClientes);
+    }
+
+    //UPDATE TABELA HISTORICO_CLIENTES
+    public void atualizaTabelaHistoricoClientes(JTable tabelaHistorioCliente, String nif){
+
+        String[] colunasHistoricoClientes = {"Matricula","Vendedor", "Comprador", "Valor Compra", "Valor Venda", "Data Trans.", "Colaborador"};
+        DefaultTableModel modelHistoricoClientes = new DefaultTableModel(colunasHistoricoClientes, 0);
+        tabelaHistorioCliente.setModel(modelHistoricoClientes);
+
+        if(nif == null){
+            modelHistoricoClientes.getDataVector().removeAllElements();
+            modelHistoricoClientes.fireTableDataChanged();
+            tabelaHistorioCliente.setModel(modelHistoricoClientes);
+            return;
+        }
+
+        for (Transacao t : historicoClientes.get(nif)) {
+            modelHistoricoClientes.addRow(new Object[]{t.getTipo(), t.getNifComprador(), t.getNifVendedor(), t.getMatricula().getMatricula(), t.getValor()});
+        }
+        tabelaHistorioCliente.setModel(modelHistoricoClientes);
+    }
+
+    public boolean isNIFValido(String dono){
         if(dono == null)
             return false;
 
@@ -260,6 +357,21 @@ public class Gestor {
             return false;
         }
         return true;
+    }
+
+    public boolean isContactoValido(String contacto){
+        if(contacto == null)
+            return false;
+        if(contacto.length() != 9)
+            return false;
+        return true;
+    }
+
+    public boolean isEmailValido(String email){
+        /*Regex para validação matricula inclusivé por ano*/
+        Pattern pattern = Pattern.compile("^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.find();
     }
 
 }

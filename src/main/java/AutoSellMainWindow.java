@@ -1,4 +1,5 @@
 import Model.Gestor;
+import Model.Transacao;
 import Model.Veiculo;
 
 import javax.swing.*;
@@ -461,19 +462,7 @@ public class AutoSellMainWindow extends JFrame{
         grupoClientes.add(rdClientesNIF);
         grupoClientes.add(rdClientesNome);
 
-        String[] colunasClientes = {"NIF","Nome", "Telefone", "Email", "Morada", "Cod.Postal"};
-        Object[][] dataClientes = {{"230123321", "Pedro Martins", "963325432", "p.martins@gmail.com", "Rua de escola S/N", "2400-000"},
-                                    {"210329983", "Rosa Maria", "916983323", "rosa.maria@sapo.pt", "Travessa de sto Antonio","3154-431"}};
-        DefaultTableModel modelClientes = new DefaultTableModel(colunasClientes, 0);
-
-        for (Object[] item : dataClientes) {
-            modelClientes.addRow(item);
-        }
-        tabelaClientes.setModel(modelClientes);
-
-        String[] colunasHistoricoClientes = {"Matricula","Vendedor", "Comprador", "Valor Compra", "Valor Venda", "Data Trans.", "Colaborador"};
-        DefaultTableModel modelHistoricoClientes = new DefaultTableModel(colunasHistoricoClientes, 0);
-        tabelaHistorioCliente.setModel(modelHistoricoClientes);
+        Gestor.getGestor().atualizaTabelaClientes(tabelaClientes);
 
         tabelaClientes.addMouseListener(new MouseAdapter() {
             @Override
@@ -481,8 +470,14 @@ public class AutoSellMainWindow extends JFrame{
                 super.mouseClicked(e);
 
                 String nif =  tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0).toString();
-                Object[][] dataHistoricoClientess = null;
 
+                LinkedList<Transacao> transacoes = Gestor.getGestor().getTransacoes(nif);
+
+                if(transacoes == null)
+                    Gestor.getGestor().atualizaTabelaHistoricoClientes(tabelaHistorioCliente, null);
+                else
+                    Gestor.getGestor().atualizaTabelaHistoricoClientes(tabelaHistorioCliente, nif);
+                /*
                 if(nif.equals("230123321"))
                     dataHistoricoClientess = new Object[][] {{"50-35-LI", "503630330", "230123321", ""  ,"1750","15/05/2022", "121"}};
                 else
@@ -493,6 +488,7 @@ public class AutoSellMainWindow extends JFrame{
                     modelHistoricoClientes.fireTableDataChanged();
                     modelHistoricoClientes.addRow(item);
                 }
+                */
 
             }
         });
@@ -500,7 +496,7 @@ public class AutoSellMainWindow extends JFrame{
         inserirClienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AutoSellClientesInserir inserir = new AutoSellClientesInserir();
+                new AutoSellClientesInserir(AutoSellMainWindow.this, tabelaClientes);
             }
         });
         editarClienteButton.addActionListener(new ActionListener() {
@@ -511,7 +507,7 @@ public class AutoSellMainWindow extends JFrame{
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
-                AutoSellClientesEditar editar = new AutoSellClientesEditar(tabelaClientes);
+                 new AutoSellClientesEditar(AutoSellMainWindow.this, tabelaClientes);
             }
         });
         eliminarClienteButton.addActionListener(new ActionListener() {
@@ -522,14 +518,23 @@ public class AutoSellMainWindow extends JFrame{
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
+
+                String nif =  tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0).toString();
+
+                LinkedList<Transacao> transacoes = Gestor.getGestor().getTransacoes(nif);
+
+                if(transacoes != null){
+                    JOptionPane.showMessageDialog(autoSellMainFrame, "Não é possivel eliminar clientes com historico de transações");
+                    return;
+                }
+
                 int result = JOptionPane.showConfirmDialog(autoSellMainFrame,"Tem a certeza?", "Eliminar Entrada",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
                 if(result == JOptionPane.YES_OPTION){
-                    DefaultTableModel model = (DefaultTableModel) tabelaClientes.getModel();
-                    model.removeRow(tabelaClientes.getSelectedRow());
-                    modelHistoricoClientes.getDataVector().removeAllElements();
-                    modelHistoricoClientes.fireTableDataChanged();
+                    Gestor.getGestor().removerCliente(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0).toString());
+                    Gestor.getGestor().atualizaTabelaClientes(tabelaClientes);
+                    Gestor.getGestor().atualizaTabelaHistoricoClientes(tabelaHistorioCliente, null);
                 }
             }
         });

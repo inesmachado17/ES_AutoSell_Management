@@ -69,7 +69,7 @@ public class AutoSellVeiculosEditar extends JDialog {
                     return;
                 }
 
-                if(!Gestor.getGestor().isDonoAnteriorValido(txtDonoAnt.getText())){
+                if(!Gestor.getGestor().isNIFValido(txtDonoAnt.getText())){
                     JOptionPane.showMessageDialog(null, "Dono Anterior Invalido.");
                     return;
                 }
