@@ -22,7 +22,9 @@ public class AutoSellVeiculosInserir extends JDialog{
 
         this.parent = frame;
 
-        String[] marcas = {"Audi","Toyota","Mercedes-Benz","BMW","Honda","Ford","Hyundai","Nissan","Volkswagen","Porsche", "Opel"};
+        //String[] marcas = {"Audi","Toyota","Mercedes-Benz","BMW","Honda","Ford","Hyundai","Nissan","Volkswagen","Porsche", "Opel"};
+        String[] marcas = Gestor.getGestor().getMarcas();
+
         final DefaultComboBoxModel model = new DefaultComboBoxModel(marcas);
         comboMarca.setModel(model);
         setTitle("Inserir Veiculo");

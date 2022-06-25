@@ -54,4 +54,15 @@ public class Trabalho {
     public void setDataFim(Data dataFim) {
         this.dataFim = dataFim;
     }
+
+    @Override
+    public String toString() {
+        return "Trabalho{" +
+                "tipoTrabalho='" + tipoTrabalho + '\'' +
+                ", matricula=" + matricula +
+                ", oficina='" + oficina + '\'' +
+                ", dataInicio=" + dataInicio +
+                ", dataFim=" + dataFim +
+                '}';
+    }
 }

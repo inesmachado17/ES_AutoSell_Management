@@ -148,6 +148,9 @@ public class AutoSellMainWindow extends JFrame{
         grupoTransacoes.add(rdTransacoesCliente);
         grupoTransacoes.add(rdTranscacoesMatricula);
 
+        Gestor.getGestor().atualizaTabelaOficinas(tabelaOficinas);
+
+        /*
         String[] colunasTransacoes = {"Matricula","Vendedor", "Comprador", "Valor Compra", "Valor Venda", "Data Trans.","Confirmada", "Colaborador"};
         Object[][] dataTransacoes = {{"04-ER-22", "239223112", "503630330", "1500","","05/05/2022", "X", "1"},
                 {"50-35-LI", "503630330", "210322667", "","1750","15/05/2022", "","121"}};
@@ -158,6 +161,8 @@ public class AutoSellMainWindow extends JFrame{
             modelTransacoes.addRow(item);
         }
         tabelaTrasacoes.setModel(modelTransacoes);
+
+        */
 
         transacaoInserirButton.addActionListener(new ActionListener() {
             @Override
@@ -219,6 +224,8 @@ public class AutoSellMainWindow extends JFrame{
         grupoOficinas.add(rdOficinasOficina);
         grupoOficinas.add(rdOficinasMatricula);
 
+        Gestor.getGestor().atualizaTabelaOficinas(tabelaOficinas);
+        /*
         String[] colunasOficinas = {"Matricula","Oficina", "Tipo de Serviço", "Data Inicio", "Data Fim"};
         Object[][] dataOficinas = {{"04-ER-22", "Lisboa", "Manutenção", "02/05/2022", ""},
                                     {"50-35-LI", "Leiria", "Manutenção", "02/05/2022", ""},
@@ -230,11 +237,12 @@ public class AutoSellMainWindow extends JFrame{
             modelOficinas.addRow(item);
         }
         tabelaOficinas.setModel(modelOficinas);
+        */
 
         oficinaInserirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AutoSellOficinasInserir inserir = new AutoSellOficinasInserir();
+                new AutoSellOficinasInserir(AutoSellMainWindow.this, tabelaOficinas);
             }
         });
         oficinaEditarButton.addActionListener(new ActionListener() {
@@ -245,7 +253,7 @@ public class AutoSellMainWindow extends JFrame{
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
-                AutoSellOficinasEditar editar = new AutoSellOficinasEditar(tabelaOficinas);
+                new AutoSellOficinasEditar(AutoSellMainWindow.this, tabelaOficinas);
             }
         });
         oficinaEliminarButton.addActionListener(new ActionListener() {
@@ -261,8 +269,8 @@ public class AutoSellMainWindow extends JFrame{
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
                 if(result == JOptionPane.YES_OPTION){
-                    DefaultTableModel model = (DefaultTableModel) tabelaOficinas.getModel();
-                    model.removeRow(tabelaOficinas.getSelectedRow());
+                    Gestor.getGestor().removerTrabalho(tabelaOficinas.getValueAt(tabelaOficinas.getSelectedRow(), 0).toString());
+                    Gestor.getGestor().atualizaTabelaOficinas(tabelaOficinas);
                 }
 
             }
@@ -290,6 +298,7 @@ public class AutoSellMainWindow extends JFrame{
         grupoPecas.add(rdPecasDesig);
         grupoPecas.add(rdPecasRef);
 
+        /*
         String[] colunasPecas = {"Referencia","Designação", "Marca", "Local", "Qtd.", "Qtd. Min."};
         Object[][] dataPecas = {{"99321", "Oleo para Motor 1L", "Bosh", "Lisboa", "2", "1"},
                                 {"CM900", "Correia para Motor", "Audi", "Leiria", "4","2"}};
@@ -301,10 +310,14 @@ public class AutoSellMainWindow extends JFrame{
         }
         tabelaPecas.setModel(modelPecas);
 
+        */
+
+        Gestor.getGestor().atualizaTabelaPecas(tabelaPecas);
+
         inserirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AutoSellPecasInserir inserir = new AutoSellPecasInserir();
+                new AutoSellPecasInserir(AutoSellMainWindow.this, tabelaPecas);
             }
         });
 
@@ -316,7 +329,7 @@ public class AutoSellMainWindow extends JFrame{
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
-                AutoSellPecasEditar editar = new AutoSellPecasEditar(tabelaPecas);
+                new AutoSellPecasEditar(AutoSellMainWindow.this, tabelaPecas);
             }
         });
 
@@ -333,8 +346,8 @@ public class AutoSellMainWindow extends JFrame{
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
                 if(result == JOptionPane.YES_OPTION){
-                    DefaultTableModel model = (DefaultTableModel) tabelaPecas.getModel();
-                    model.removeRow(tabelaPecas.getSelectedRow());
+                    Gestor.getGestor().removerPeca(tabelaPecas.getValueAt(tabelaPecas.getSelectedRow(), 0).toString());
+                    Gestor.getGestor().atualizaTabelaPecas(tabelaPecas);
                 }
 
             }
@@ -348,7 +361,7 @@ public class AutoSellMainWindow extends JFrame{
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
-                AutoSellPecasPedir pedir = new AutoSellPecasPedir(tabelaPecas);
+                new AutoSellPecasPedir(AutoSellMainWindow.this, tabelaPecas);
             }
         });
 

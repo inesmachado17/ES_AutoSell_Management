@@ -22,14 +22,15 @@ public class AutoSellVeiculosEditar extends JDialog {
     public AutoSellVeiculosEditar(JFrame frame, JTable table) {
         this.parent = frame;
 
-        String[] marcas = {"Audi","Toyota","Mercedes-Benz","BMW","Honda","Ford","Hyundai","Nissan","Volkswagen","Porsche","Opel"};
+        //String[] marcas = {"Audi","Toyota","Mercedes-Benz","BMW","Honda","Ford","Hyundai","Nissan","Volkswagen","Porsche","Opel"};
+        String[] marcas = Gestor.getGestor().getMarcas();
 
         final DefaultComboBoxModel model = new DefaultComboBoxModel(marcas);
         cbMarca.setModel(model);
 
         txtMatricula.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-        txtModelo.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-        cbMarca.setSelectedItem(table.getValueAt(table.getSelectedRow(), 2).toString());
+        txtModelo.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+        cbMarca.setSelectedItem(table.getValueAt(table.getSelectedRow(), 1).toString());
         txtDonoAnt.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
         taCaracteristicas.setText(table.getValueAt(table.getSelectedRow(), 6).toString());
         setTitle("Editar Veiculo");

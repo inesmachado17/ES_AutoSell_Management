@@ -45,10 +45,10 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Serviço"/>
+              <text value="Data Inic."/>
             </properties>
           </component>
-          <component id="126a4" class="javax.swing.JTextField" binding="txtServico">
+          <component id="126a4" class="javax.swing.JTextField" binding="txtDataInicio">
             <constraints>
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -61,10 +61,10 @@
               <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Data Inic."/>
+              <text value="Data Fim"/>
             </properties>
           </component>
-          <component id="bedc6" class="javax.swing.JTextField" binding="txtData">
+          <component id="bedc6" class="javax.swing.JTextField" binding="txtDataFim">
             <constraints>
               <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>

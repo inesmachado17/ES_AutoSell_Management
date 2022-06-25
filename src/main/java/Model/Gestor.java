@@ -2,12 +2,18 @@ package Model;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Gestor {
 
+    private String[] oficinas = {"Lisboa","Coimbra","Leiria","Porto"};
+    private String[] tiposServico = {"Manutenção","Preparação"};
+    private String[] marcas = {"Audi","Toyota","Mercedes-Benz","BMW","Honda","Ford","Hyundai","Nissan","Volkswagen","Porsche", "Opel"};
+
     private LinkedList<Trabalho> trabalhos;
     private LinkedList<Peca> pecas;
+    private HashMap<String, LinkedList<Pedido>> pedidos = new HashMap<>();
     private LinkedList<Veiculo> veiculos;
 
     private static final Gestor instancia = new Gestor();
@@ -20,6 +26,28 @@ public class Gestor {
         this.trabalhos = new LinkedList<>();
         this.pecas = new LinkedList<>();
         this.veiculos = new LinkedList<>();
+
+        veiculos.add(new Veiculo(new Matricula("04-ER-22"), "A3", "Audi", 343222334, "5P"));
+        veiculos.add(new Veiculo(new Matricula("40-ET-00"), "X3", "BMW", 567229456, "2P"));
+        veiculos.add(new Veiculo(new Matricula("KK-04-33"), "Clio", "Renault", 134223452, "4P"));
+
+        trabalhos.add(new Trabalho("Preparação", new Matricula("04-ER-22"), "Leiria", new Data(25,06,2022), null));
+
+        pecas.add(new Peca("BS01", "Bosh", "Lisboa", 1, "Oleo para motor"));
+        pecas.add(new Peca("C901", "Castrol", "Coimbra", 2, "Correia Distribuição"));
+        pecas.add(new Peca("JANTE54", "WURTH", "Leiria", 8, "Jantes"));
+    }
+
+    public String[] getOficinas() {
+        return oficinas;
+    }
+
+    public String[] getTiposServico() {
+        return tiposServico;
+    }
+
+    public String[] getMarcas() {
+        return marcas;
     }
 
     public LinkedList<Trabalho> getTrabalhos() {
@@ -51,6 +79,10 @@ public class Gestor {
     }
 
     public void atualizarVeiculo(Veiculo veiculo){
+
+        if(veiculo == null)
+            return;
+
         for (Veiculo v: veiculos) {
             if(v.getMatricula().getMatricula().equals(veiculo.getMatricula().getMatricula())){
                veiculos.remove(v);
@@ -67,7 +99,7 @@ public class Gestor {
         }
     }
 
-    // UPDATE TABLES
+    // UPDATE TABLE VEICULOS
     public void atualizaTabelaVeiculos(JTable tabela){
         String[] colunasVeiculos = {"Matricula","Marca", "Modelo", "Ano", "Dono Ant.", "N.Donos", "Caracteristicas"};
 
@@ -93,8 +125,48 @@ public class Gestor {
     public void inserirTrabalho(Trabalho trabalho){
         if(trabalho == null)
             return;
-
         this.trabalhos.add(trabalho);
+    }
+
+    public Trabalho getTrabalho(Matricula matricula){
+        Trabalho result = null;
+        for (Trabalho t: trabalhos) {
+            if(t.getMatricula().getMatricula().equals(matricula.getMatricula()))
+                result = t;
+        }
+        return result;
+    }
+
+    public void atualizarTrabalho(Trabalho trabalho){
+        for (Trabalho t: trabalhos) {
+            if(t.getMatricula().getMatricula().equals(trabalho.getMatricula().getMatricula())){
+                trabalhos.remove(t);
+                trabalhos.add(trabalho);
+            }
+        }
+    }
+
+    public void removerTrabalho(String matricula){
+        for (Trabalho t: trabalhos) {
+            if(t.getMatricula().getMatricula().equals(matricula)){
+                trabalhos.remove(t);
+            }
+        }
+    }
+
+    // UPDATE TABLE OFICINAS
+    public void atualizaTabelaOficinas(JTable tabela){
+
+        String[] colunasTrabalhos = {"Matricula","Oficina", "Tipo de Serviço", "Data Inicio", "Data Fim"};
+
+        LinkedList<Trabalho> trabalhos = Gestor.getGestor().getTrabalhos();
+
+        DefaultTableModel modelTrabalhos = new DefaultTableModel(colunasTrabalhos, 0);
+
+        for (Trabalho t : trabalhos) {
+            modelTrabalhos.addRow(new Object[]{t.getMatricula().getMatricula(), t.getOficina(), t.getTipoTrabalho(), t.getDataInicio(), t.getDataFim() });
+        }
+        tabela.setModel(modelTrabalhos);
     }
 
     public void inserirPeca(Peca peca){
@@ -102,6 +174,67 @@ public class Gestor {
             return;
 
         this.pecas.add(peca);
+    }
+
+    public Peca getPeca(String referencia){
+        Peca result = null;
+        for (Peca p: pecas) {
+            if(p.getReferencia().equals(referencia))
+                result = p;
+        }
+        return result;
+    }
+
+    public void atualizarPeca(Peca peca){
+        for (Peca p: pecas) {
+            if(p.getReferencia().equals(p.getReferencia())){
+                pecas.remove(p);
+                pecas.add(peca);
+            }
+        }
+    }
+
+    public void removerPeca(String referencia){
+        for (Peca p: pecas) {
+            if(p.getReferencia().equals(referencia)){
+                trabalhos.remove(p);
+            }
+        }
+    }
+
+    // UPDATE TABLE PECAS
+    public void atualizaTabelaPecas(JTable tabela){
+
+        String[] colunasPecas = {"Referencia","Marca", "Local", "Quantidade", "Designacao"};
+
+        LinkedList<Peca> pecas = Gestor.getGestor().getPecas();
+
+        DefaultTableModel modelPecas = new DefaultTableModel(colunasPecas, 0);
+
+        for (Peca p : pecas) {
+            modelPecas.addRow(new Object[]{p.getReferencia(), p.getMarca(), p.getLocal(), p.getQuantidade(), p.getDesingnacao() });
+        }
+        tabela.setModel(modelPecas);
+    }
+
+    public LinkedList<Pedido> getPedido(String ref){
+        return pedidos.get(ref);
+    }
+
+    public void adicionarPedido(String ref, Pedido p){
+
+        if(p == null)
+            return;
+
+        LinkedList<Pedido> result = pedidos.get(ref);
+
+        if(result == null){
+            LinkedList<Pedido> pedidosLista = new LinkedList<>();
+            pedidosLista.add(p);
+            pedidos.put(ref,pedidosLista);
+            return;
+        }
+        result.add(p);
     }
 
     public boolean isDonoAnteriorValido(String dono){

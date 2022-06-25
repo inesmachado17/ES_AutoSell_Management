@@ -34,7 +34,11 @@ public class Data {
         
         return new Data(dia, mes, ano);
     }
-    
+
+    public Calendar getData() {
+        return calendar;
+    }
+
     @Override
     public String toString() {
         return calendar.get(Calendar.DAY_OF_MONTH) + "/" + 

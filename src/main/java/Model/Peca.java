@@ -55,4 +55,15 @@ public class Peca {
     public void setDesingnacao(String desingnacao) {
         this.desingnacao = desingnacao;
     }
+
+    @Override
+    public String toString() {
+        return "Peca{" +
+                "referencia='" + referencia + '\'' +
+                ", marca='" + marca + '\'' +
+                ", local='" + local + '\'' +
+                ", quantidade=" + quantidade +
+                ", desingnacao='" + desingnacao + '\'' +
+                '}';
+    }
 }
