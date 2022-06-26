@@ -88,10 +88,8 @@ public class Gestor {
         return pecas;
     }
 
-    public LinkedList<Veiculo> getVeiculos() {
-        return veiculos;
-    }
 
+    //region Transacao
     public LinkedList<Transacao> getTransacoes() {
         return transacoes;
     }
@@ -125,6 +123,66 @@ public class Gestor {
         } else {
             lt.add(t);
         }
+    }
+
+    public void atualizarTransacao(Transacao transacao) {
+        if (transacao == null)
+            return;
+
+        for (Transacao t : transacoes) {
+            if (t.getMatricula().getMatricula().equals(transacao.getMatricula().getMatricula())
+                    && t.getNifVendedor() == transacao.getNifVendedor() && t.getNifComprador() == t.getNifComprador()) {
+                transacoes.set(transacoes.indexOf(t), transacao);
+                break;
+            }
+        }
+
+
+        LinkedList<Transacao> lt;
+
+        lt = historicoClientes.get(Integer.toString(transacao.getNifVendedor()));
+
+        if (lt == null)
+            lt = historicoClientes.get(Integer.toString(transacao.getNifComprador()));
+
+        for (Transacao t : lt) {
+            if (t.getMatricula().getMatricula().equals(transacao.getMatricula().getMatricula())
+                    && t.getNifVendedor() == transacao.getNifVendedor() && t.getNifComprador() == t.getNifComprador()) {
+                lt.set(lt.indexOf(t), transacao);
+                break;
+            }
+        }
+    }
+
+    public void removerTransacao(Transacao transacao) {
+
+        for (Transacao t : transacoes) {
+            if (t.getMatricula().getMatricula().equals(transacao.getMatricula().getMatricula())
+                    && t.getNifVendedor() == transacao.getNifVendedor() && t.getNifComprador() == t.getNifComprador()) {
+                transacoes.remove(t);
+                break;
+            }
+        }
+
+        LinkedList<Transacao> lt;
+        lt = historicoClientes.get(Integer.toString(transacao.getNifVendedor()));
+
+        if (lt == null)
+            lt = historicoClientes.get(Integer.toString(transacao.getNifComprador()));
+
+        for (Transacao t : lt) {
+            if (t.getMatricula().getMatricula().equals(transacao.getMatricula().getMatricula())
+                    && t.getNifVendedor() == transacao.getNifVendedor() && t.getNifComprador() == t.getNifComprador()) {
+                lt.remove(t);
+                break;
+            }
+        }
+    }
+    // endregion
+
+    //region Veiculos
+    public LinkedList<Veiculo> getVeiculos() {
+        return veiculos;
     }
 
     public void inserirVeiculo(Veiculo veiculo) {
@@ -185,6 +243,7 @@ public class Gestor {
         }
         tabela.setModel(modelVeiculos);
     }
+    //endregion
 
     public void inserirTrabalho(Trabalho trabalho) {
         if (trabalho == null)
