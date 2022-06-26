@@ -63,6 +63,11 @@ public class AutoSellPecasInserir extends JDialog {
                     return;
                 }
 
+                if(txtQtd.getText().equals("")){
+                    JOptionPane.showMessageDialog(null, "Quantidade inválida");
+                    return;
+                }
+
                 if(Integer.parseInt(txtQtd.getText()) <= 0){
                     JOptionPane.showMessageDialog(null, "Quantidade inválida");
                     return;
