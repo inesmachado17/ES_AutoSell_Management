@@ -63,7 +63,7 @@ public class AutoSellPecasPedir extends JDialog{
                 }
 
                 if(cbOrigem.getSelectedItem().toString().equals("")){
-                    JOptionPane.showMessageDialog(null, "Marca Invalida.");
+                    JOptionPane.showMessageDialog(null, "Localização Invalida.");
                     return;
                 }
 

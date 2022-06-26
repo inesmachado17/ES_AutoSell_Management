@@ -10,7 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 
-public class AutoSellMainWindow extends JFrame{
+public class AutoSellMainWindow extends JFrame {
 
     private JTabbedPane tabbedPane1;
     private JPanel mainPainel;
@@ -26,7 +26,7 @@ public class AutoSellMainWindow extends JFrame{
     private JButton transacaoInserirButton;
     private JButton transacaoEditarButton;
     private JButton transacaoEliminarButton;
-    private JTable tabelaTrasacoes;
+    private JTable tabelaTransacoes;
     private JButton oficinaInserirButton;
     private JButton oficinaEditarButton;
     private JButton oficinaEliminarButton;
@@ -99,7 +99,7 @@ public class AutoSellMainWindow extends JFrame{
         veiculoEditarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaVeiculos.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaVeiculos.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
@@ -111,16 +111,16 @@ public class AutoSellMainWindow extends JFrame{
         veiculoEliminarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaVeiculos.getSelectionModel().isSelectionEmpty()){
+                if (tabelaVeiculos.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
 
-                int result = JOptionPane.showConfirmDialog(autoSellMainFrame,"Tem a certeza?", "Eliminar Entrada",
+                int result = JOptionPane.showConfirmDialog(autoSellMainFrame, "Tem a certeza?", "Eliminar Entrada",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
-                if(result == JOptionPane.YES_OPTION){
+                if (result == JOptionPane.YES_OPTION) {
                     Gestor.getGestor().removerVeiculo(tabelaVeiculos.getValueAt(tabelaVeiculos.getSelectedRow(), 0).toString());
                     Gestor.getGestor().atualizaTabelaVeiculos(tabelaVeiculos);
                 }
@@ -130,12 +130,11 @@ public class AutoSellMainWindow extends JFrame{
         veiculoPesquisarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (grupoVeiculos.getSelection() == null)
-                {
+                if (grupoVeiculos.getSelection() == null) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor escolha um critério de pesquisa.");
                     return;
                 }
-                if(txtVeiculosPesquisa.getText().equals("")){
+                if (txtVeiculosPesquisa.getText().equals("")) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor preencha o campo pesquisa.");
                     return;
                 }
@@ -149,7 +148,7 @@ public class AutoSellMainWindow extends JFrame{
         grupoTransacoes.add(rdTransacoesCliente);
         grupoTransacoes.add(rdTranscacoesMatricula);
 
-        Gestor.getGestor().atualizaTabelaOficinas(tabelaOficinas);
+        Gestor.getGestor().atualizaTabelaTransacoes(tabelaTransacoes);
 
         /*
         String[] colunasTransacoes = {"Matricula","Vendedor", "Comprador", "Valor Compra", "Valor Venda", "Data Trans.","Confirmada", "Colaborador"};
@@ -161,43 +160,43 @@ public class AutoSellMainWindow extends JFrame{
         for (Object[] item : dataTransacoes) {
             modelTransacoes.addRow(item);
         }
-        tabelaTrasacoes.setModel(modelTransacoes);
+        tabelaTransacoes.setModel(modelTransacoes);
 
         */
 
         transacaoInserirButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AutoSellTransacoesInserir inserir = new AutoSellTransacoesInserir();
+                new AutoSellTransacoesInserir(AutoSellMainWindow.this, tabelaTransacoes);
             }
         });
         transacaoEditarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaTrasacoes.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaTransacoes.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
 
-                AutoSellTransacoesEditar editar = new AutoSellTransacoesEditar(tabelaTrasacoes);
+                new AutoSellTransacoesEditar(AutoSellMainWindow.this, tabelaTransacoes);
             }
         });
         transacaoEliminarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaTrasacoes.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaTransacoes.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
 
-                int result = JOptionPane.showConfirmDialog(autoSellMainFrame,"Tem a certeza?", "Eliminar Entrada",
+                int result = JOptionPane.showConfirmDialog(autoSellMainFrame, "Tem a certeza?", "Eliminar Entrada",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
-                if(result == JOptionPane.YES_OPTION){
-                    DefaultTableModel model = (DefaultTableModel) tabelaTrasacoes.getModel();
-                    model.removeRow(tabelaTrasacoes.getSelectedRow());
+                if (result == JOptionPane.YES_OPTION) {
+                    DefaultTableModel model = (DefaultTableModel) tabelaTransacoes.getModel();
+                    model.removeRow(tabelaTransacoes.getSelectedRow());
                 }
 
             }
@@ -206,12 +205,11 @@ public class AutoSellMainWindow extends JFrame{
         transacaoPesquisarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (grupoTransacoes.getSelection() == null)
-                {
+                if (grupoTransacoes.getSelection() == null) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor escolha um critério de pesquisa.");
                     return;
                 }
-                if(txtTranscacoesPesquisa.getText().equals("")){
+                if (txtTranscacoesPesquisa.getText().equals("")) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor preencha o campo pesquisa.");
                     return;
                 }
@@ -249,7 +247,7 @@ public class AutoSellMainWindow extends JFrame{
         oficinaEditarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaOficinas.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaOficinas.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
@@ -260,16 +258,16 @@ public class AutoSellMainWindow extends JFrame{
         oficinaEliminarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaOficinas.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaOficinas.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
 
-                int result = JOptionPane.showConfirmDialog(autoSellMainFrame,"Tem a certeza?", "Eliminar Entrada",
+                int result = JOptionPane.showConfirmDialog(autoSellMainFrame, "Tem a certeza?", "Eliminar Entrada",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
-                if(result == JOptionPane.YES_OPTION){
+                if (result == JOptionPane.YES_OPTION) {
                     Gestor.getGestor().removerTrabalho(tabelaOficinas.getValueAt(tabelaOficinas.getSelectedRow(), 0).toString());
                     Gestor.getGestor().atualizaTabelaOficinas(tabelaOficinas);
                 }
@@ -280,12 +278,11 @@ public class AutoSellMainWindow extends JFrame{
         oficinasPesquisaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (grupoOficinas.getSelection() == null)
-                {
+                if (grupoOficinas.getSelection() == null) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor escolha um critério de pesquisa.");
                     return;
                 }
-                if(txtOficinasPesquisa.getText().equals("")){
+                if (txtOficinasPesquisa.getText().equals("")) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor preencha o campo pesquisa.");
                     return;
                 }
@@ -325,7 +322,7 @@ public class AutoSellMainWindow extends JFrame{
         editarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaPecas.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaPecas.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
@@ -337,16 +334,16 @@ public class AutoSellMainWindow extends JFrame{
         eliminarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaPecas.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaPecas.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
 
-                int result = JOptionPane.showConfirmDialog(autoSellMainFrame,"Tem a certeza?", "Eliminar Entrada",
+                int result = JOptionPane.showConfirmDialog(autoSellMainFrame, "Tem a certeza?", "Eliminar Entrada",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
-                if(result == JOptionPane.YES_OPTION){
+                if (result == JOptionPane.YES_OPTION) {
                     Gestor.getGestor().removerPeca(tabelaPecas.getValueAt(tabelaPecas.getSelectedRow(), 0).toString());
                     Gestor.getGestor().atualizaTabelaPecas(tabelaPecas);
                 }
@@ -357,7 +354,7 @@ public class AutoSellMainWindow extends JFrame{
         btnPedirPeca.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaPecas.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaPecas.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
@@ -369,12 +366,11 @@ public class AutoSellMainWindow extends JFrame{
         pecasPesquisaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (grupoPecas.getSelection() == null)
-                {
+                if (grupoPecas.getSelection() == null) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor escolha um critério de pesquisa.");
                     return;
                 }
-                if(txtPecasPesquisa.getText().equals("")){
+                if (txtPecasPesquisa.getText().equals("")) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor preencha o campo pesquisa.");
                     return;
                 }
@@ -388,9 +384,9 @@ public class AutoSellMainWindow extends JFrame{
         grupoTransportes.add(rdTransportesLocal);
         grupoTransportes.add(rdTransportesMatricula);
 
-        String[] colunasTransportes = {"Matricula","Local Atual", "Local Recolha", "Local Entrega", "Entregue", "Dta. Recolha", "Dta. Entrega"};
+        String[] colunasTransportes = {"Matricula", "Local Atual", "Local Recolha", "Local Entrega", "Entregue", "Dta. Recolha", "Dta. Entrega"};
         Object[][] dataTransportes = {{"04-ER-22", "Evento", "Leiria", "Lisboa", "", "", ""},
-                {"50-35-LI", "Filial", "Lisboa", "Coimbra", "X","05/05/2022", "07/05/2022" }};
+                {"50-35-LI", "Filial", "Lisboa", "Coimbra", "X", "05/05/2022", "07/05/2022"}};
 
         DefaultTableModel modelTransportes = new DefaultTableModel(colunasTransportes, 0);
 
@@ -408,7 +404,7 @@ public class AutoSellMainWindow extends JFrame{
         editarButton1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaTransportes.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaTransportes.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
@@ -419,15 +415,15 @@ public class AutoSellMainWindow extends JFrame{
         transportesCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaTransportes.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaTransportes.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
-                int result = JOptionPane.showConfirmDialog(autoSellMainFrame,"Tem a certeza?", "Eliminar Transporte",
+                int result = JOptionPane.showConfirmDialog(autoSellMainFrame, "Tem a certeza?", "Eliminar Transporte",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
-                if(result == JOptionPane.YES_OPTION){
+                if (result == JOptionPane.YES_OPTION) {
                     DefaultTableModel model = (DefaultTableModel) tabelaTransportes.getModel();
                     model.removeRow(tabelaTransportes.getSelectedRow());
                 }
@@ -438,12 +434,11 @@ public class AutoSellMainWindow extends JFrame{
         transportesPesquisaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (grupoTransportes.getSelection() == null)
-                {
+                if (grupoTransportes.getSelection() == null) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor escolha um critério de pesquisa.");
                     return;
                 }
-                if(txtTransportesPesquisa.getText().equals("")){
+                if (txtTransportesPesquisa.getText().equals("")) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor preencha o campo pesquisa.");
                     return;
                 }
@@ -452,7 +447,7 @@ public class AutoSellMainWindow extends JFrame{
         //endregion
 
         /* ESTATISTICAs */
-        String[] estatisticas = {"Marcas Mais Vendidas","Modelos Mais Vendidos","Melhores Clientes","Melhores Filiais","Investimentos por Marca","Investimentos por Modelo"};
+        String[] estatisticas = {"Marcas Mais Vendidas", "Modelos Mais Vendidos", "Melhores Clientes", "Melhores Filiais", "Investimentos por Marca", "Investimentos por Modelo"};
         final DefaultComboBoxModel modelEstatisticas = new DefaultComboBoxModel(estatisticas);
         cbEstatisticas.setModel(modelEstatisticas);
 
@@ -469,11 +464,11 @@ public class AutoSellMainWindow extends JFrame{
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                String nif =  tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0).toString();
+                String nif = tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0).toString();
 
                 LinkedList<Transacao> transacoes = Gestor.getGestor().getTransacoes(nif);
 
-                if(transacoes == null)
+                if (transacoes == null)
                     Gestor.getGestor().atualizaTabelaHistoricoClientes(tabelaHistorioCliente, null);
                 else
                     Gestor.getGestor().atualizaTabelaHistoricoClientes(tabelaHistorioCliente, nif);
@@ -502,36 +497,36 @@ public class AutoSellMainWindow extends JFrame{
         editarClienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaClientes.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaClientes.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
-                 new AutoSellClientesEditar(AutoSellMainWindow.this, tabelaClientes);
+                new AutoSellClientesEditar(AutoSellMainWindow.this, tabelaClientes);
             }
         });
         eliminarClienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaClientes.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaClientes.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
 
-                String nif =  tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0).toString();
+                String nif = tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0).toString();
 
                 LinkedList<Transacao> transacoes = Gestor.getGestor().getTransacoes(nif);
 
-                if(transacoes != null){
+                if (transacoes != null) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Não é possivel eliminar clientes com historico de transações");
                     return;
                 }
 
-                int result = JOptionPane.showConfirmDialog(autoSellMainFrame,"Tem a certeza?", "Eliminar Entrada",
+                int result = JOptionPane.showConfirmDialog(autoSellMainFrame, "Tem a certeza?", "Eliminar Entrada",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
-                if(result == JOptionPane.YES_OPTION){
+                if (result == JOptionPane.YES_OPTION) {
                     Gestor.getGestor().removerCliente(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0).toString());
                     Gestor.getGestor().atualizaTabelaClientes(tabelaClientes);
                     Gestor.getGestor().atualizaTabelaHistoricoClientes(tabelaHistorioCliente, null);
@@ -542,12 +537,11 @@ public class AutoSellMainWindow extends JFrame{
         clientesPesquisaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (grupoClientes.getSelection() == null)
-                {
+                if (grupoClientes.getSelection() == null) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor escolha um critério de pesquisa.");
                     return;
                 }
-                if(txtClientesPesquisa.getText().equals("")){
+                if (txtClientesPesquisa.getText().equals("")) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor preencha o campo pesquisa.");
                     return;
                 }
@@ -561,9 +555,9 @@ public class AutoSellMainWindow extends JFrame{
         grupoEventos.add(rdEventoLocal);
         grupoEventos.add(rdEventoNome);
 
-        String[] colunasEventos = {"Nome","Local", "Data Inicio", "Data Fim", "Nº Veiculos"};
+        String[] colunasEventos = {"Nome", "Local", "Data Inicio", "Data Fim", "Nº Veiculos"};
         Object[][] dataEventos = {{"Feira de Maio de Leiria", "Leiria", "01/05/2022", "30/05/2022", "2"},
-                                  {"Queima das Fitas", "Coimbra", "02/06/2022", "15/06/2022", "3"}};
+                {"Queima das Fitas", "Coimbra", "02/06/2022", "15/06/2022", "3"}};
         DefaultTableModel modelEventos = new DefaultTableModel(colunasEventos, 0);
 
         for (Object[] item : dataEventos) {
@@ -571,7 +565,7 @@ public class AutoSellMainWindow extends JFrame{
         }
         tabelaEventos.setModel(modelEventos);
 
-        String[] colunasEventosVeiculos = {"Matricula","Marca", "Modelo", "Ano", "Dono Anterior", "Donos", "Caracteristicas"};
+        String[] colunasEventosVeiculos = {"Matricula", "Marca", "Modelo", "Ano", "Dono Anterior", "Donos", "Caracteristicas"};
         DefaultTableModel modelEventosVeiculos = new DefaultTableModel(colunasEventosVeiculos, 0);
         tabelaVeiculosEventos.setModel(modelEventosVeiculos);
 
@@ -579,16 +573,16 @@ public class AutoSellMainWindow extends JFrame{
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                String evento =  tabelaEventos.getValueAt(tabelaEventos.getSelectedRow(), 0).toString();
+                String evento = tabelaEventos.getValueAt(tabelaEventos.getSelectedRow(), 0).toString();
                 Object[][] dataVeiculosEventos = null;
 
-                if(evento.equals("Feira de Maio de Leiria"))
-                    dataVeiculosEventos = new Object[][] {{"04-ER-22", "Audi", "A3", "2000", "212543987", "1", "3P Preto"},
-                                                           {"50-35-LI", "BMW", "320", "1999", "234765437", "2", "5P Branco"}};
+                if (evento.equals("Feira de Maio de Leiria"))
+                    dataVeiculosEventos = new Object[][]{{"04-ER-22", "Audi", "A3", "2000", "212543987", "1", "3P Preto"},
+                            {"50-35-LI", "BMW", "320", "1999", "234765437", "2", "5P Branco"}};
                 else
-                    dataVeiculosEventos = new Object[][] {{"65-RD-15", "Opel", "Corsa", "1998", "210454772", "1", "Comercial Azul Escuro"},
-                                                          {"52-23-FT", "Renault", "Megane", "2007", "218656098", "3", "2P Cinza"},
-                                                          {"01-XS-87", "Tesla", "Y", "2019", "119223223", "2", "5P Preto - Bateria Nova"}};
+                    dataVeiculosEventos = new Object[][]{{"65-RD-15", "Opel", "Corsa", "1998", "210454772", "1", "Comercial Azul Escuro"},
+                            {"52-23-FT", "Renault", "Megane", "2007", "218656098", "3", "2P Cinza"},
+                            {"01-XS-87", "Tesla", "Y", "2019", "119223223", "2", "5P Preto - Bateria Nova"}};
                 modelEventosVeiculos.getDataVector().removeAllElements();
                 modelEventosVeiculos.fireTableDataChanged();
                 for (Object[] item : dataVeiculosEventos) {
@@ -606,7 +600,7 @@ public class AutoSellMainWindow extends JFrame{
         editarEventoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaEventos.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaEventos.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
@@ -617,15 +611,15 @@ public class AutoSellMainWindow extends JFrame{
         eliminarEventoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(tabelaEventos.getSelectionModel().isSelectionEmpty()) {
+                if (tabelaEventos.getSelectionModel().isSelectionEmpty()) {
                     //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
-                int result = JOptionPane.showConfirmDialog(autoSellMainFrame,"Tem a certeza?", "Eliminar Entrada",
+                int result = JOptionPane.showConfirmDialog(autoSellMainFrame, "Tem a certeza?", "Eliminar Entrada",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
-                if(result == JOptionPane.YES_OPTION){
+                if (result == JOptionPane.YES_OPTION) {
                     DefaultTableModel model = (DefaultTableModel) tabelaEventos.getModel();
                     model.removeRow(tabelaEventos.getSelectedRow());
                     modelEventosVeiculos.getDataVector().removeAllElements();
@@ -637,12 +631,11 @@ public class AutoSellMainWindow extends JFrame{
         eventosPesquisaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (grupoEventos.getSelection() == null)
-                {
+                if (grupoEventos.getSelection() == null) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor escolha um critério de pesquisa.");
                     return;
                 }
-                if(txtEventosPesquisa.getText().equals("")){
+                if (txtEventosPesquisa.getText().equals("")) {
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Por favor preencha o campo pesquisa.");
                     return;
                 }

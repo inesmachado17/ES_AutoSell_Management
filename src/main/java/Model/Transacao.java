@@ -9,6 +9,7 @@ public class Transacao {
     private Data dataTransacao;
     private Boolean confirmada;
 
+
     public Transacao(String tipo, int nifComprador, int nifVendedor, Matricula matricula, double valor, Data dataTransacao) {
         this.tipo = tipo;
         this.nifComprador = nifComprador;
@@ -73,5 +74,18 @@ public class Transacao {
 
     public void setConfirmada(Boolean confirmada) {
         this.confirmada = confirmada;
+    }
+
+    @Override
+    public String toString() {
+        return "Transacao{" +
+                "tipo='" + tipo + '\'' +
+                ", nifComprador=" + nifComprador +
+                ", nifVendedor=" + nifVendedor +
+                ", matricula=" + matricula +
+                ", valor=" + valor +
+                ", dataTransacao=" + dataTransacao +
+                ", confirmada=" + confirmada +
+                '}';
     }
 }

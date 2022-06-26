@@ -219,7 +219,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <component id="f36fe" class="javax.swing.JTable" binding="tabelaTrasacoes">
+                          <component id="f36fe" class="javax.swing.JTable" binding="tabelaTransacoes">
                             <constraints/>
                             <properties/>
                           </component>
