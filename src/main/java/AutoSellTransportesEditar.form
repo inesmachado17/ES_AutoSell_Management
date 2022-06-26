@@ -30,7 +30,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="XX-XX-XX"/>
+            </properties>
           </component>
           <component id="add27" class="javax.swing.JLabel">
             <constraints>
@@ -88,6 +90,7 @@
             </constraints>
             <properties>
               <text value=""/>
+              <toolTipText value="dd/mm/AAAA"/>
             </properties>
           </component>
           <component id="b439c" class="javax.swing.JLabel">
@@ -104,7 +107,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="dd/mm/AAAA"/>
+            </properties>
           </component>
           <component id="5642a" class="javax.swing.JComboBox" binding="cbLocalAtual">
             <constraints>

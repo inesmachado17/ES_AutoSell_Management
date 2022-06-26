@@ -38,7 +38,10 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <text value=""/>
+              <toolTipText value="NIF"/>
+            </properties>
           </component>
           <component id="dcf67" class="javax.swing.JLabel">
             <constraints>
@@ -54,7 +57,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="NIF"/>
+            </properties>
           </component>
           <component id="54752" class="javax.swing.JLabel">
             <constraints>
@@ -70,7 +75,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="XX-XX-XX"/>
+            </properties>
           </component>
           <component id="d6408" class="javax.swing.JLabel">
             <constraints>

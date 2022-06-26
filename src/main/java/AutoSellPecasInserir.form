@@ -92,7 +92,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="Designação do fabricante"/>
+            </properties>
           </component>
           <component id="197ca" class="javax.swing.JLabel">
             <constraints>

@@ -38,7 +38,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="dd/mm/AAAA"/>
+            </properties>
           </component>
           <component id="b6154" class="javax.swing.JTextField" binding="txtDataFim">
             <constraints>
@@ -46,7 +48,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="dd/mm/AAAA"/>
+            </properties>
           </component>
           <component id="742c7" class="javax.swing.JComboBox" binding="cbOficina">
             <constraints>
@@ -92,7 +96,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="XX-XX-XX"/>
+            </properties>
           </component>
         </children>
       </grid>
