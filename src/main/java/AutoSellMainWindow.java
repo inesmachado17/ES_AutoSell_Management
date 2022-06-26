@@ -1,6 +1,4 @@
-import Model.Gestor;
-import Model.Transacao;
-import Model.Veiculo;
+import Model.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Calendar;
 import java.util.LinkedList;
 
 public class AutoSellMainWindow extends JFrame {
@@ -186,7 +185,6 @@ public class AutoSellMainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (tabelaTransacoes.getSelectionModel().isSelectionEmpty()) {
-                    //System.out.println("Nenhuma linha selcionada");
                     JOptionPane.showMessageDialog(autoSellMainFrame, "Tem de escolher uma linha");
                     return;
                 }
@@ -195,8 +193,18 @@ public class AutoSellMainWindow extends JFrame {
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
                 if (result == JOptionPane.YES_OPTION) {
-                    DefaultTableModel model = (DefaultTableModel) tabelaTransacoes.getModel();
-                    model.removeRow(tabelaTransacoes.getSelectedRow());
+                    int nifVendedor = Integer.parseInt(tabelaTransacoes.getValueAt(tabelaTransacoes.getSelectedRow(), 1).toString());
+                    int nifComprador = Integer.parseInt(tabelaTransacoes.getValueAt(tabelaTransacoes.getSelectedRow(), 2).toString());
+                    Matricula matricula = new Matricula(tabelaTransacoes.getValueAt(tabelaTransacoes.getSelectedRow(), 0).toString());
+
+                    Transacao transacao = new Transacao(null,
+                            nifComprador, nifVendedor,
+                            matricula,
+                            0.0,
+                            null);
+                    Gestor.getGestor().removerTransacao(transacao);
+
+                    Gestor.getGestor().atualizaTabelaTransacoes(tabelaTransacoes);
                 }
 
             }
